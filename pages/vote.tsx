@@ -54,6 +54,14 @@ const Vote : NextPage = () =>{
     async function submitAProposal(proposalText: string){
         await contract?.call("addProposal", proposalText);
     }
+
+    async function canVoteOnAProposal(proposalIndex: number): Promise<boolean>{
+        return await contract?.call("canVote", proposalIndex, address);
+    }
+
+    async function castVoteOnAProposal(proposalIndex: number, vote: boolean): Promise<boolean>{
+        return await contract?.call("castVote", vote, proposalIndex);
+    }
     return(
     <div className="bg-gradient-to-tr from-red-500 to-purple-400 relative h-screen v-screen">
         <div className= "flex flex-col">
@@ -84,13 +92,13 @@ const Vote : NextPage = () =>{
                                 {proposal.proposalText}
                             </h2>
                             <div className="flex flex-row justify-evenly">
-                                <button className="text-white bg-gradient-to-tr from-blue-400 to-red-600  font-bold rounded-full text-sm text-center py-2 px-5">Yes</button>
+                                <button className="text-white bg-gradient-to-tr from-blue-400 to-red-600  font-bold rounded-full text-sm text-center py-2 px-5" onClick={ async()=> {await canVoteOnAProposal(index) ? castVoteOnAProposal(index, true) : console.log("Vote Casted")}}>Yes</button>
                                 <h2 className="font-primary text-gray-200 text-4xl">
                                     {proposal.yesVotes}
                                 </h2>
                             </div>
                             <div className="flex flex-row justify-evenly mt-3">
-                                <button className="text-white bg-gradient-to-tr from-blue-400 to-red-600  font-bold rounded-full text-sm text-center py-2 px-5">No</button>
+                                <button className="text-white bg-gradient-to-tr from-blue-400 to-red-600  font-bold rounded-full text-sm text-center py-2 px-5" onClick={ async()=> {await canVoteOnAProposal(index) ? castVoteOnAProposal(index, false) : console.log("Vote Casted")}}>No</button>
                                 <h2 className="font-primary text-gray-200 text-4xl">
                                     {proposal.noVotes}
                                 </h2>
