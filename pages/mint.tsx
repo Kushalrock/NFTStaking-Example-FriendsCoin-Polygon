@@ -1,16 +1,6 @@
 import { useAddress, useMetamask, useNFTDrop } from "@thirdweb-dev/react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import {
-  BriefcaseIcon,
-  CalendarIcon,
-  CheckIcon,
-  ChevronDownIcon,
-  CurrencyDollarIcon,
-  LinkIcon,
-  LocationMarkerIcon,
-  PencilIcon,
-} from '@heroicons/react/solid';
 
 const Mint: NextPage = () => {
   const router = useRouter();
