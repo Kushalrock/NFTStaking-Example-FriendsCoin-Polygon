@@ -107,7 +107,7 @@ import {
     }
   
     return (
-        <div className="bg-gradient-to-tr from-red-500 to-purple-400 relative h-screen w-screen">
+        <div className="bg-gradient-to-tr from-red-500 to-purple-400">
             <div className= "flex flex-col">
                 <div className="flex flex-col w-5/6 mx-auto text-center justify-start max-w-xl">
                 <h1 className="font-primary font-extrabold text-white text-3xl sm:text-4xl md:text-5xl md:leading-snug">
@@ -126,6 +126,21 @@ import {
                     </div>
                     )}
                 </div>
+                <div className="flex flex-col mt-3 px-2 mx-auto">
+                    <div className="flex flex-row justify-around mt-3">
+                        <h1 className="font-primary font-bold text-white text-2xl sm:text-3xl md:text-4xl md:leading-snug">
+                        Claimable Rewards {!claimableRewards
+                        ? "Loading..."
+                        : ethers.utils.formatUnits(claimableRewards, 18)} {tokenBalance?.symbol}
+                        </h1>
+                        <h1 className="font-primary font-bold text-white text-2xl sm:text-3xl md:text-4xl md:leading-snug px-6">
+                        Token Bal {!tokenBalance
+                        ? "Loading..."
+                        : tokenBalance.displayValue} {tokenBalance?.symbol}
+                        </h1>
+                    </div>
+                    <div className="flex flex-row justify-center"><button className="text-white bg-gradient-to-tr from-blue-400 to-red-600  font-bold rounded-full text-sm text-center py-2 px-2" onClick={claimRewards}>Claim Rewards</button></div>
+                </div>
                 <div className="flex flex-col justify-start mt-3 px-2">
                     <h1 className="font-primary font-bold text-white text-2xl sm:text-3xl md:text-4xl md:leading-snug">
                         Your Unstaked NFTs
@@ -139,6 +154,27 @@ import {
                                 <div className="justify-center items-center flex-row flex mt-2">
                                     <button className="text-white bg-gradient-to-tr from-blue-400 to-red-600  font-bold rounded-full text-sm text-center py-2 px-2" onClick={() => stakeNft(nft.metadata.id)}>
                                         Stake NFT
+                                    </button>
+                                </div>
+                            </div>
+                        )
+                        )}
+                    </div>
+                </div>
+                
+                <div className="flex flex-col justify-start mt-3 px-2">
+                    <h1 className="font-primary font-bold text-white text-2xl sm:text-3xl md:text-4xl md:leading-snug">
+                        Your Staked NFTs
+                    </h1>
+                    <div className="flex flex-row justify-start mt-3">
+                        {stakedNfts?.map((nft) => 
+                        (
+                            <div key = {nft.metadata.id.toString()} className="flex flex-col px-3">
+                                <ThirdwebNftMedia metadata={nft.metadata} className="max-w-48 max-h-48"/>
+                                <h2 className="text-white font-normal text-center text-lg">{nft.metadata.name}</h2>
+                                <div className="justify-center items-center flex-row flex mt-2">
+                                    <button className="text-white bg-gradient-to-tr from-blue-400 to-red-600  font-bold rounded-full text-sm text-center py-2 px-2" onClick={() => withdraw(nft.metadata.id)}>
+                                        Withdraw
                                     </button>
                                 </div>
                             </div>
