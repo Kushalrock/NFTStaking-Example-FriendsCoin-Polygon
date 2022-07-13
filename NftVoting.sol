@@ -33,23 +33,23 @@ contract FriendsLandVoting is ReentrancyGuard{
 
     mapping(address => uint[]) public hasVoted;
     function addProposal(string memory proposalText) public{
-        require(getVotingPower() > 0);
+        require(getVotingPower(msg.sender) > 0);
         allProposals.push(Proposal(proposalText, 0, 0, msg.sender));
     }
-    function getVotingPower() public view returns(uint){
-        return ((rewardsToken.balanceOf(msg.sender) * votingPowerPerCoin)/10**18) + nftCollection.balanceOf(msg.sender) * votingPowerPerNFT;
+    function getVotingPower(address requester) public view returns(uint){
+        return ((rewardsToken.balanceOf(requester) * votingPowerPerCoin)/10**18) + nftCollection.balanceOf(requester) * votingPowerPerNFT;
     }
-    function canVote(uint proposalIndex) public view returns(bool){
-        for(uint i = 0; i < hasVoted[msg.sender].length; i++){
-            if(hasVoted[msg.sender][i] == proposalIndex){
+    function canVote(uint proposalIndex, address requester) public view returns(bool){
+        for(uint i = 0; i < hasVoted[requester].length; i++){
+            if(hasVoted[requester][i] == proposalIndex){
                 return false;
             }
         }
         return true;
     }
     function castVote(bool vote, uint proposalIndex) public{
-        require(canVote(proposalIndex));
-        uint votingPower = getVotingPower();
+        require(canVote(proposalIndex, msg.sender));
+        uint votingPower = getVotingPower(msg.sender);
         vote ? allProposals[proposalIndex].yesVotes += votingPower : allProposals[proposalIndex].noVotes += votingPower;
         hasVoted[msg.sender].push(proposalIndex);
     }
